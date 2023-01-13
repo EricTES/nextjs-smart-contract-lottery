@@ -26,14 +26,14 @@ const LotteryEntrance = () => {
     // })
 
     const { runContractFunction: getEntranceFee } = useWeb3Contract({
-        abi: abi,
+        abi: JSON.parse(abi),
         contractAddress: raffleAddress,
         functionName: "getEntranceFee",
         params: {},
     })
 
     async function updateUI() {
-        const fee = await getEntranceFee()
+        const fee = (await getEntranceFee() as BigNumber).toString()
         console.log(fee)
     }
 

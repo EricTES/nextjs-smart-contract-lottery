@@ -1,4 +1,5 @@
-import * as abi from './abi.json';
-import * as contractAddresses from './contractAddresses.json';
 
-export { abi, contractAddresses };
+
+
+export { default as contractAddresses } from "./contractAddresses.json";
+export { default as abi } from "./abi.json";
