@@ -64,5 +64,28 @@ This is a web3 frontend package that allows us to work along side Moralis. For e
 ## moralis knows our chainID
 The reason why Moralis knows about our chainId in LotteryEntrance.tsx is because in Header.tsx we used the Connect Button which passes information into the MoralisProvider (index.tsx) and then the provider passes it into all the other components.
 
+
 ## chainID in moralis is in HEX form
 To transform chainID (hex form) to numbers, we need to use javescript built in function , parseInt(hex_number_in_string)
+
+
+## call contract function in front end component 
+
+import { useWeb3Contract } from 'react-moralis'
+
+useWeb3Contract is what allows us to call a function of a contract. It takes:
+- abi
+- contract address
+- functionName
+- params
+- msgValue (optional)
+
+and returns runContractFunction: //assign a name
+
+e.g 
+ const { runContractFunction: getEntranceFee } = useWeb3Contract({
+        abi: JSON.parse(abi),
+        contractAddress: raffleAddress,
+        functionName: "getEntranceFee",
+        params: {},
+    })
