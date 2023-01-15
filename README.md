@@ -122,3 +122,19 @@ It's similar to a blockchain in the sense that it is decentralised
 but different because nodes on the IPFS network can optional choose to remember your data in their recordings.
 Also  IPFS network is extremely lightweight in comparison to the blockchain network because there are no things such as
 smart contracts, transactions and etc.
+
+
+## Adding code to IPFS manually
+1. yarn run build
+2. yarn next export
+3. import the "out" folder into the IPFS desktop app
+4. copy the CID and paste it into the browser: http://ipfs.io/ipfs/{CID}
+
+
+## Easier way using FLeek
+Fleek allows us to deloy our code from github directly and make it a website
+1. Go to fleek.co
+2. sign up or sign in with Github account
+3. Connect with Github 
+4. Select the repository you want
+5. Install and Authorise
