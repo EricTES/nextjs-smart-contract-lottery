@@ -69,7 +69,7 @@ The reason why Moralis knows about our chainId in LotteryEntrance.tsx is because
 To transform chainID (hex form) to numbers, we need to use javescript built in function , parseInt(hex_number_in_string)
 
 
-## call contract function in front end component 
+## call contract function in front end component using runContractFunction
 
 import { useWeb3Contract } from 'react-moralis'
 
@@ -89,3 +89,36 @@ e.g
         functionName: "getEntranceFee",
         params: {},
     })
+
+
+## logging error in runContractFunction
+It is good practise to always set the onError parameter when calling a funciton from runContractFunction
+
+e.g 
+ const { runContractFunction: getEntranceFee } = useWeb3Contract({
+        abi: JSON.parse(abi),
+        contractAddress: raffleAddress,
+        functionName: "getEntranceFee",
+        params: {},
+    })
+
+getEntranceFee({
+    onError: (error) => console.log(error)
+})
+
+
+## Tailwind
+
+Tailwind is like Bootstrap but more freedome according to google
+
+Extensions to add (optional):
+- Tailwind CSS IntelliSense
+- PostCSS Language Support
+
+
+## IPFS
+IPFS is a decentralised network for uploading your website
+It's similar to a blockchain in the sense that it is decentralised
+but different because nodes on the IPFS network can optional choose to remember your data in their recordings.
+Also  IPFS network is extremely lightweight in comparison to the blockchain network because there are no things such as
+smart contracts, transactions and etc.
