@@ -141,6 +141,7 @@ Fleek allows us to deloy our code from github directly and make it a website
 
 ## Tracking event using Moralis Streams and Firebase(webhook)
 
+SETUP
 1. Create a project on firebase and switch to Blaze plan because we need the Secret Manager api.
 2. Run "yarn add firebase-tools" in your project. These tools allows us to test, manage, and deploy your Firebase project from the command line.
 3. Then run "firebase login" to log into your firebase account. If you're already logged in, rerunning the command will return a message informing you that you are logged in.
@@ -150,3 +151,8 @@ Fleek allows us to deloy our code from github directly and make it a website
 6. The command line will ask for the Moralis API which you grab from Moralias and paste in.
 7. Finally run "firebase deploy --only extensions" and press Yes to deploy the extensions
     a. If you recieved an error saying that "Ensure that the Cloud Functions service account has 'artifactregistry.repositories.list'....", just go to firebase and try reinstalling the Moralis extension
+
+FIREBASE CONSOLE
+1. Create a Firestore database
+2. Copy the security rules from the Moralias extension and paste into the Firestore rule section. Extentions --> Manage --> How this extension works
+3. Lastly copy the webhook url from Functions section for Moralis
