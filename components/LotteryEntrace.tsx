@@ -89,8 +89,8 @@ const LotteryEntrance = () => {
     }, [isWeb3Enabled, recentWinner])
 
     // Listen to when WinnerPicked Event is fired
-    useEffect(() => {
-        if (window.ethereum) {
+    async function winnerPickedListener() {
+        await new Promise<void>(async (_) => {
             const provider = new ethers.providers.Web3Provider(window.ethereum)
             const signer = provider.getSigner()
             const raffle = new ethers.Contract(
@@ -99,9 +99,16 @@ const LotteryEntrance = () => {
                 signer
             )
 
-            raffle.on("WinnerPicked", async (recentWinner) => {
+            raffle.once("WinnerPicked", async (recentWinner) => {
+                console.log(recentWinner)
                 setRecentWinner(recentWinner) //useState
             })
+        })
+    }
+
+    useEffect(() => {
+        if (window.ethereum) {
+            winnerPickedListener()
         }
     }, [])
 
