@@ -9,12 +9,17 @@ import { Bell } from "@web3uikit/icons"
 interface contractAddressesInterface {
     [key: string]: string[]
 }
+declare global {
+    interface Window {
+        ethereum?: any
+    }
+}
 
 const LotteryEntrance = () => {
     const addresses: contractAddressesInterface = contractAddresses
     // we are able to get the chain ID thanks to the ConnectButton (Header.tsx) which
     // sends this information to the MoralisProvider (_app.tsx)
-    const { chainId: chainIdHex, isWeb3Enabled } = useMoralis()
+    const { chainId: chainIdHex, isWeb3Enabled, account } = useMoralis()
     const chainId = parseInt(chainIdHex || "")
     const raffleAddress =
         chainId in contractAddresses ? addresses[chainId.toString()][0] : undefined
@@ -72,20 +77,39 @@ const LotteryEntrance = () => {
         const recentWinnerFromCall = (await getRecentWinner()) as string
         setEntranceFee(entraceFeeFromCall)
         setNumberOfPlayers(numberOfPlayersFromCall)
+
         setRecentWinner(recentWinnerFromCall)
     }
 
     useEffect(() => {
         if (isWeb3Enabled) {
+            console.log("Update UI")
             updateUI()
         }
-    }, [isWeb3Enabled])
+    }, [isWeb3Enabled, recentWinner])
+
+    // Listen to when WinnerPicked Event is fired
+    useEffect(() => {
+        if (window.ethereum) {
+            const provider = new ethers.providers.Web3Provider(window.ethereum)
+            const signer = provider.getSigner()
+            const raffle = new ethers.Contract(
+                raffleAddress || "0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9", //had to hardcode the contract address, since I was running into some otherissues
+                abi,
+                signer
+            )
+
+            raffle.on("WinnerPicked", async (recentWinner) => {
+                setRecentWinner(recentWinner) //useState
+            })
+        }
+    }, [])
 
     // Dispatch slide in notificaiton and update webpage information
     // when contract function call is a success
     const handleSuccess = async (tx: any) => {
         const txReceipt = await tx.wait(1)
-        console.log(txReceipt)
+        console.log("Tx Receipt", txReceipt)
         handleNewNotification()
         updateUI()
     }
@@ -110,7 +134,7 @@ const LotteryEntrance = () => {
                         onClick={async function () {
                             await enterRaffle({
                                 onSuccess: handleSuccess,
-                                onError: (error) => console.log(error),
+                                onError: (error) => console.log("Enter raffle Error", error),
                             })
                         }}
                         disabled={isLoading || isFetching}
